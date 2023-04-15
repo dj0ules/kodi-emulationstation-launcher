@@ -18,7 +18,7 @@ __localizedMessages__ = __addon__.getLocalizedString
 
 
 # Method to print logs on a standard way
-def log(message, level=xbmc.LOGNOTICE):
+def log(message, level=xbmc.LOGINFO):
     xbmc.log('[%s:v%s] %s' % (__addonId__, __version__, message.encode('utf-8')), level)
 # end of log
 
@@ -37,14 +37,14 @@ launch = []
 # We are going to ask on which platform this is running so we can load the default executable location for it
 if platform.system() == "Windows":
     # If the platform is Windows
-    executable = __addon__.getSetting('windowsExecutable').decode('utf-8')
+    executable = __addon__.getSetting('windowsExecutable')
     log("Loaded Windows executable location from Settings: " + executable)
     launch = [executable]
 else:
     # Otherwise it is Linux because EmulationStation currently runs on Windows, Debians and RetroPie
-    executable = __addon__.getSetting('linuxExecutable').decode('utf-8')
+    executable = __addon__.getSetting('linuxExecutable')
     log("Loaded Linux executable location from Settings: " + executable)
-    xterm = __addon__.getSetting('xtermExecutable').decode('utf-8')
+    xterm = __addon__.getSetting('xtermExecutable')
     log("Load xterm executable location from Settings: " + xterm)
     # Verify that the xterm path is still valid
     if not os.path.isfile(xterm):
@@ -87,9 +87,9 @@ else:
         log("Returning powersaving settings to inital value")
         # Before reenabling powersavings, send Down key to Kodi to wake up. Otherwise computer goes to sleep as soon as parameter is set
         xbmc.executeJSONRPC('{"jsonrpc":"2.0","method":"Input.Down","id":1}')
-        
+
         xbmc.executeJSONRPC('{"jsonrpc":"2.0","method":"Settings.SetSettingValue", "params":{"setting":"powermanagement.displaysoff","value":'+displayoff+'},"id":1}')
         xbmc.executeJSONRPC('{"jsonrpc":"2.0","method":"Settings.SetSettingValue", "params":{"setting":"powermanagement.shutdowntime","value":'+shutdowntime+'},"id":1}')
     if __addon__.getSetting('workaround') == "true":
-	log("Removing workaround for windows stacking order")
+        log("Removing workaround for windows stacking order")
         xbmc.executeJSONRPC('{"jsonrpc":"2.0","method": "Input.ExecuteAction", "params": {"action":"togglefullscreen"},"id":1}')
